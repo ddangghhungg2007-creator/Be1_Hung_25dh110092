@@ -8,15 +8,15 @@
 <h2 class="bg-success">DANH SÁCH THƯ MỤC</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new {@class ="btn btn-primary btn-sm "})
+    @Html.ActionLink("Create New", "Create", null, new {@class ="btn btn-primary  "})
 </p>
-<table class="table bg-info col-lg-12 col-md-2 col-sm-3">
+<table class="table bg-info  col-md-6 ">
     <tr>
-        <th class="bg-success col-lg-8 col-md-4 col-sm-2">
+        <th class="bg-success col-md-4 ">
             @*@Html.DisplayNameFor(model => model.CategoryName)*@
             TÊN DANH MỤC
         </th>
-        <th class="bg-success col-lg-5 col-md-6 col-sm-1" ></th>
+        <th class="bg-success col-md-2" ></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -25,7 +25,7 @@
             @Html.DisplayFor(modelItem => item.CategoryName)
         </td>
         <td>
-            @Html.ActionLink("Cập nhật", "Edit", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" }) 
+            @Html.ActionLink("Sửa", "Edit", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" }) 
             @Html.ActionLink("Chi tiết","Details", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" })
             @Html.ActionLink("Xoá", "Delete", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" })
         </td>
@@ -33,3 +33,5 @@
 }
 
 </table>
+
+

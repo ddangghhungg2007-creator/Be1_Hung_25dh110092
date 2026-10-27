@@ -1,0 +1,270 @@
+﻿
+@model Be1_Hung_25dh110092.Models.ViewModel.ProductSearchVM
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<style>
+  
+    .product-title {
+        background-color: #E8F5E9;
+        color: #000000;
+        padding: 12px 16px;
+        border-left: 6px solid #FF0000;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .product-table {
+        width: 100%;
+        background-color: #FFFFFF;
+        color: #000000;
+        border-collapse: collapse;
+        border: 1px solid #FF0000;
+    }
+
+        /* Tiêu đề các cột: nền vàng, chữ tím */
+        .product-table th {
+            background-color: #FFD54F;
+            color: #800080;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #FF0000;
+        }
+
+        /* Các ô dữ liệu */
+        .product-table td {
+            padding: 12px;
+            vertical-align: middle;
+            border: 1px solid #FF0000;
+        }
+
+        /* Nền các dòng sản phẩm màu đỏ nhạt */
+        .product-table tbody tr {
+            background-color: #FFCDD2;
+        }
+
+            /* Hiệu ứng khi di chuột vào dòng sản phẩm */
+            .product-table tbody tr:hover {
+                background-color: #EF9A9A;
+                transition: 0.2s;
+            }
+
+    /* Hình ảnh sản phẩm */
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        border-radius: 8px;
+        background-color: white;
+        border: 1px solid #FF0000;
+        padding: 4px;
+    }
+
+    /* Các nút bấm: nền vàng, chữ tím */
+    .product-btn {
+        display: inline-block;
+        background-color: #000000;
+        color: #B71C1C !important;
+        border: 1px solid #B71C1C;
+        border-radius: 5px;
+        padding: 7px 12px;
+        margin: 3px;
+        text-decoration: none !important;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+
+
+       
+        .product-btn:hover {
+            background-color: #333333;
+            color: #FF0000 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(183, 28, 28, 0.4);
+        }
+
+   
+    .product-actions {
+        text-align: center;
+        min-width: 220px;
+    }
+
+   
+    .product-price {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    /* Khoảng cách nút thêm mới */
+    .product-create {
+        margin-top: 20px;
+    }
+
+   
+</style>
+
+
+<h2 class="product-title">
+    DANH SÁCH SẢN PHẨM
+</h2>
+
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; align-items:end;">
+
+        <div>
+            <label>Tên sản phẩm</label>
+            @Html.TextBoxFor(m => m.SearchTerm, new
+            {
+                @class = "form-control",
+                placeholder = "Nhập tên sản phẩm..."
+            })
+        </div>
+
+        <div>
+            <label>Giá từ</label>
+            @Html.TextBoxFor(m => m.MinPrice, new
+            {
+                @class = "form-control",
+                type = "number",
+                min = "0",
+                placeholder = "Giá thấp nhất"
+            })
+        </div>
+
+        <div>
+            <label>Giá đến</label>
+            @Html.TextBoxFor(m => m.MaxPrice, new
+                        {
+                            @class = "form-control",
+                            type = "number",
+                            min = "0",
+                            placeholder = "Giá cao nhất"
+                        })
+        </div>
+
+        <div>
+            <label>Sắp xếp</label>
+            @Html.DropDownListFor(m => m.SortOrder,
+                new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Tên A - Z", Value = "name_asc" },
+                    new SelectListItem { Text = "Tên Z - A", Value = "name_desc" },
+                    new SelectListItem { Text = "Giá thấp đến cao", Value = "price_asc" },
+                    new SelectListItem { Text = "Giá cao đến thấp", Value = "price_desc" }
+                }, "Value", "Text", Model.SortOrder),
+                "Mặc định",
+                new { @class = "form-control" })
+        </div>
+
+        <div>
+            <button type="submit" class="product-btn">Tìm kiếm</button>
+            @Html.ActionLink("Làm mới", "Index", null,
+                new { @class = "product-btn" })
+        </div>
+
+    </div>
+}
+
+
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Đơn giá</th>
+            <th>Danh mục</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Products)
+
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @if (!string.IsNullOrEmpty(item.ProductImage))
+                    {
+                        <img src="@Url.Content(item.ProductImage)"
+                             alt="@item.ProductName"
+                             class="product-image" />
+                    }
+                    else
+                    {
+                        <span>Chưa có ảnh</span>
+                    }
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+
+                <td class="product-price">
+                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+
+                <td class="product-actions">
+                    @Html.ActionLink("Sửa", "Edit",
+                        new { id = item.ProductID },
+                        new { @class = "product-btn" })
+
+                    @Html.ActionLink("Chi tiết", "Details",
+                        new { id = item.ProductID },
+                        new { @class = "product-btn" })
+
+                    @Html.ActionLink("Xóa", "Delete",
+                        new { id = item.ProductID },
+                        new { @class = "product-btn" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="text-center mt-3">
+    @if (Model.Products.HasPreviousPage)
+    {
+        @Html.ActionLink("« Trang trước", "Index",
+            new
+            {
+                page = Model.Products.PageNumber - 1,
+                searchTerm = Model.SearchTerm,
+                minPrice = Model.MinPrice,
+                maxPrice = Model.MaxPrice,
+                sortOrder = Model.SortOrder
+            },
+            new { @class = "product-btn" })
+    }
+
+    <span style="margin: 0 12px;">
+        Trang @Model.Products.PageNumber / @Model.Products.PageCount
+    </span>
+
+    @if (Model.Products.HasNextPage)
+    {
+        @Html.ActionLink("Trang sau »", "Index",
+            new
+            {
+                page = Model.Products.PageNumber + 1,
+                searchTerm = Model.SearchTerm,
+                minPrice = Model.MinPrice,
+                maxPrice = Model.MaxPrice,
+                sortOrder = Model.SortOrder
+            },
+            new { @class = "product-btn" })
+    }
+</div>
+
+<div class="product-create">
+    @Html.ActionLink("＋ Thêm mới", "Create", null, new { @class = "product-btn" })
+</div>
