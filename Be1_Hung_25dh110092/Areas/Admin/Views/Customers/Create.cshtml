@@ -1,0 +1,268 @@
+﻿@model Be1_Hung_25dh110092.Models.Customer
+
+@{
+    ViewBag.Title = "Thêm khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .customer-create {
+        background-color: #FFFFFF;
+        padding: 25px 30px;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .customer-title {
+        color: #198754;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #E8F5E9;
+    }
+
+    .customer-subtitle {
+        color: #555555;
+        font-size: 17px;
+        margin-bottom: 25px;
+    }
+
+    .customer-create .control-label {
+        color: #333333;
+        font-weight: 600;
+        text-align: right;
+        padding-top: 9px;
+    }
+
+    .customer-create .form-control {
+        height: 42px;
+        border: 1px solid #CCCCCC;
+        border-radius: 6px;
+        box-shadow: none;
+        width: 100%;
+    }
+
+        .customer-create .form-control:focus {
+            border-color: #198754;
+            box-shadow: 0 0 5px rgba(25, 135, 84, 0.25);
+        }
+
+    .customer-create .form-group {
+        margin-bottom: 20px;
+    }
+
+    .customer-create textarea.form-control {
+        height: 90px;
+    }
+
+    .btn-customer-save {
+        background-color: #198754;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+        .btn-customer-save:hover {
+            background-color: #146C43;
+            color: white;
+        }
+
+    .btn-customer-back {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 9px 18px;
+        background-color: #F1F3F5;
+        color: #333333;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn-customer-back:hover {
+            background-color: #DEE2E6;
+            color: #198754;
+            text-decoration: none;
+        }
+
+    .customer-create .text-danger {
+        display: block;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 767px) {
+        .customer-create {
+            padding: 20px 15px;
+        }
+
+            .customer-create .control-label {
+                text-align: left;
+                padding-bottom: 7px;
+            }
+    }
+</style>
+
+<div class="customer-create">
+
+    <h2 class="customer-title">THÊM KHÁCH HÀNG</h2>
+
+    <p class="customer-subtitle">
+        Nhập thông tin khách hàng và tạo tài khoản đăng nhập.
+    </p>
+
+    @using (Html.BeginForm("Create", "Customers", new { area = "Admin" }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @* NOTE: Hiển thị lỗi tổng quát *@
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            <h4 style="color: #198754; font-weight: bold;">
+                THÔNG TIN KHÁCH HÀNG
+            </h4>
+
+            <hr />
+
+            @* Họ và tên *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerName, "Họ và tên",
+                    new { @class = "control-label col-md-2" })
+
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.CustomerName,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập họ và tên",
+                            maxlength = "255"
+                        })
+
+                    @Html.ValidationMessageFor(model => model.CustomerName, "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @* Số điện thoại *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerPhone, "Số điện thoại",
+                    new { @class = "control-label col-md-2" })
+
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.CustomerPhone,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập số điện thoại",
+                            maxlength = "15"
+                        })
+
+                    @Html.ValidationMessageFor(model => model.CustomerPhone, "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @* Email *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerEmail, "Email",
+                    new { @class = "control-label col-md-2" })
+
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.CustomerEmail,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập email"
+                        })
+
+                    @Html.ValidationMessageFor(model => model.CustomerEmail, "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @* Địa chỉ *@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerAddress, "Địa chỉ",
+                    new { @class = "control-label col-md-2" })
+
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.CustomerAddress,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập địa chỉ"
+                        })
+
+                    @Html.ValidationMessageFor(model => model.CustomerAddress, "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <hr />
+
+            <h4 style="color: #198754; font-weight: bold;">
+                THÔNG TIN TÀI KHOẢN
+            </h4>
+
+            <p style="color: #777777;">
+                Tài khoản này sẽ được liên kết với khách hàng vừa tạo.
+            </p>
+
+            @* Tên đăng nhập *@
+            <div class="form-group">
+                <label class="control-label col-md-2">Tên đăng nhập</label>
+
+                <div class="col-md-10">
+                    @Html.TextBox("TaiKhoanMoi", null,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập tên đăng nhập",
+                            maxlength = "255"
+                        })
+
+                    @Html.ValidationMessage("TaiKhoanMoi", "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @* Mật khẩu *@
+            <div class="form-group">
+                <label class="control-label col-md-2">Mật khẩu</label>
+
+                <div class="col-md-10">
+                    @Html.Password("MatKhauMoi", null,
+                        new
+                             {
+                            @class = "form-control",
+                            placeholder = "Nhập mật khẩu",
+                            maxlength = "50"
+                        })
+
+                    @Html.ValidationMessage("MatKhauMoi", "",
+                        new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @* Nút thêm khách hàng *@
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit"
+                           value="Thêm khách hàng"
+                           class="btn btn-customer-save" />
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("← Quay lại danh sách", "Index", "Customers",
+            new { area = "Admin" },
+            new { @class = "btn-customer-back" })
+    </div>
+
+</div>

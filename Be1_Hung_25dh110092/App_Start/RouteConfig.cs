@@ -13,11 +13,25 @@ namespace Be1_Hung_25dh110092
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            //);
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+    name: "Default",
+    url: "{controller}/{action}/{id}",
+    defaults: new
+    {
+        controller = "Home",
+        action = "Index",
+        id = UrlParameter.Optional
+    },
+    namespaces: new[]
+    {
+        "Be1_Hung_25dh110092.Controllers"
+    }
+);
         }
     }
 }

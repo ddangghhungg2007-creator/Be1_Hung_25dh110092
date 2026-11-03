@@ -5,33 +5,117 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 class="bg-success">DANH SÁCH THƯ MỤC</h2>
+<style>
+    /* Tiêu đề danh sách */
+    .category-title {
+        background-color: #E8F5E9;
+        color: #000000;
+        padding: 12px 16px;
+        border-left: 6px solid #FF0000;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-size: 36px;
+    }
+
+    /* Bảng danh sách thư mục */
+    .category-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #000000;
+        color: #FFFFFF;
+        border: 1px solid #FF0000;
+    }
+
+        /* Tiêu đề các cột */
+        .category-table th {
+            background-color: #404040;
+            color: #FF9900;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #FF0000;
+            font-weight: bold;
+        }
+
+        /* Nội dung các ô */
+        .category-table td {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 15px;
+            border: 1px solid #FF0000;
+            vertical-align: middle;
+        }
+
+            /* Căn giữa cột chức năng */
+            .category-table td:last-child {
+                text-align: center;
+                white-space: nowrap;
+            }
+
+    /* Nút tạo mới */
+    .category-create {
+        background-color: #FFFFFF;
+        color: #CC0000;
+        border: 1px solid #CC0000;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .category-create:hover {
+            background-color: #CC0000;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+    /* Các nút Sửa, Chi tiết, Xoá */
+    .category-btn {
+        background-color: #FFFFFF;
+        color: #CC0000;
+        border: 1px solid #CC0000;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+        margin: 2px;
+    }
+
+        .category-btn:hover {
+            background-color: #CC0000;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+</style>
+
+<h2 class="category-title">DANH SÁCH THƯ MỤC</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null, new {@class ="btn btn-primary  "})
+    @Html.ActionLink("Create New", "Create", null, new { @class = "category-create" })
 </p>
-<table class="table bg-info  col-md-6 ">
+
+<table class="category-table">
     <tr>
-        <th class="bg-success col-md-4 ">
-            @*@Html.DisplayNameFor(model => model.CategoryName)*@
+        <th style="width: 70%;">
             TÊN DANH MỤC
         </th>
-        <th class="bg-success col-md-2" ></th>
+        <th style="width: 30%;">
+            CHỨC NĂNG
+        </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Sửa", "Edit", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" }) 
-            @Html.ActionLink("Chi tiết","Details", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" })
-            @Html.ActionLink("Xoá", "Delete", new { id = item.CategoryID }, new { @class = "btn btn-primary btn-sm" })
-        </td>
-    </tr>
-}
-
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.CategoryID }, new { @class = "category-btn" })
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.CategoryID }, new { @class = "category-btn" })
+                @Html.ActionLink("Xoá", "Delete", new { id = item.CategoryID }, new { @class = "category-btn" })
+            </td>
+        </tr>
+    }
 </table>
-
-

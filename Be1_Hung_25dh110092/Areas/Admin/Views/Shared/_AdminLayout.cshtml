@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Quản trị web</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,11 +34,20 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Tên ứng dụng</p>
-            <h4>Contact</h4>
-            <p>Tên các thành viên trong nhóm</p>
-        </footer>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+        <style>
+            .ten {
+                font-family: 'Roboto', sans-serif;
+                font-size: 28px;
+                font-weight: 700;
+                color: #198754;
+            }
+        </style>
+
+        <p class="ten">Đặng Hoàng Quang Hưng</p>
+   
     </div>
 
     @Scripts.Render("~/bundles/jquery")

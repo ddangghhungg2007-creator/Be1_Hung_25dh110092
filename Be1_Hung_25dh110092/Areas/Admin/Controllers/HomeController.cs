@@ -13,5 +13,7 @@ namespace Be1_Hung_25dh110092.Areas.Admin.Controllers
         {
             return View();
         }
+
+
     }
 }

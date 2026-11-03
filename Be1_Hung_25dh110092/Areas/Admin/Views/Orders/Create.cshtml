@@ -1,0 +1,168 @@
+﻿@model Be1_Hung_25dh110092.Models.Order
+
+@{
+    ViewBag.Title = "Thêm đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .order-create-container {
+        max-width: 1100px;
+        margin: 25px auto;
+        padding: 35px;
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .order-title {
+        color: #198754;
+        font-size: 32px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #E8F5E9;
+        margin-bottom: 10px;
+    }
+
+    .order-description {
+        color: #666666;
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+
+    .order-create-container .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .order-create-container .control-label {
+        width: 200px;
+        text-align: right;
+        padding-right: 25px;
+        font-weight: bold;
+        color: #333333;
+    }
+
+    .order-create-container .form-control {
+        width: 330px;
+        height: 45px;
+        border: 1px solid #CCCCCC;
+        border-radius: 7px;
+        padding: 8px 12px;
+        box-shadow: none;
+    }
+
+        .order-create-container .form-control:focus {
+            border-color: #198754;
+            box-shadow: 0 0 5px rgba(25, 135, 84, 0.25);
+        }
+
+    .btn-add-order {
+        background-color: #198754;
+        color: white;
+        font-weight: bold;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 7px;
+        margin-left: 225px;
+        transition: 0.3s;
+    }
+
+        .btn-add-order:hover {
+            background-color: #146C43;
+            color: white;
+        }
+
+    .btn-back-order {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 20px;
+        background-color: #F1F3F5;
+        color: #333333;
+        text-decoration: none;
+        border-radius: 7px;
+    }
+
+        .btn-back-order:hover {
+            background-color: #DEE2E6;
+            color: #000000;
+            text-decoration: none;
+        }
+
+    .order-create-container .text-danger {
+        display: block;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="order-create-container">
+
+    <h2 class="order-title">THÊM ĐƠN HÀNG</h2>
+
+    <p class="order-description">
+        Nhập thông tin để thêm đơn hàng mới vào hệ thống.
+    </p>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerID, "Khách hàng", new { @class = "control-label" })
+                <div>
+                    @Html.DropDownList("CustomerID", null, "-- Chọn khách hàng --",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OrderDate, "Ngày đặt hàng", new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalAmount, "Tổng tiền", new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tổng tiền" } })
+                    @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaymentStatus, "Trạng thái thanh toán", new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập trạng thái thanh toán" } })
+                    @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AddressDelivery, "Địa chỉ giao hàng", new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.AddressDelivery, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập địa chỉ giao hàng" } })
+                    @Html.ValidationMessageFor(model => model.AddressDelivery, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <button type="submit" class="btn-add-order">
+                Thêm đơn hàng
+            </button>
+
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("← Quay lại danh sách", "Index", null, new { @class = "btn-back-order" })
+    </div>
+
+</div>

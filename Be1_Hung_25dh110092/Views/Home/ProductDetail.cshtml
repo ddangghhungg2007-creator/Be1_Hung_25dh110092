@@ -1,0 +1,197 @@
+﻿@model Be1_Hung_25dh110092.Models.ViewModel.ProductDetailVM
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<style>
+    .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 30px;
+        margin: 30px 0;
+    }
+
+    .detail-image {
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+        .detail-image img {
+            max-width: 100%;
+            height: 350px;
+            object-fit: contain;
+        }
+
+    .detail-info h2 {
+        font-weight: bold;
+    }
+
+    .detail-price {
+        color: red;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .related-products {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .related-item {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+        .related-item img {
+            width: 100%;
+            height: 130px;
+            object-fit: contain;
+        }
+
+    @@media (max-width: 768px) {
+        .detail-container {
+            grid-template-columns: 1fr;
+        }
+
+        .related-products {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>
+
+<div class="detail-container">
+    <div class="detail-image">
+        <img src="@Url.Content(
+            "~/Content/Images/" + Model.Product.ProductImage)"
+             alt="@Model.Product.ProductName" />
+    </div>
+
+    <div class="detail-info">
+        <h2>@Model.Product.ProductName</h2>
+
+        <p class="detail-price">
+            @Model.Product.ProductPrice.ToString("N0") đ
+        </p>
+
+        <p>
+            <strong>Danh mục:</strong>
+            @Model.Product.Category.CategoryName
+        </p>
+
+        <p>
+            <strong>Mã sản phẩm:</strong>
+            @Model.Product.ProductID
+        </p>
+
+        <hr />
+
+        <h4>Mô tả sản phẩm</h4>
+
+        <p>
+            @Model.Product.ProductDecription
+        </p>
+
+        @using (Html.BeginForm(
+            "ProductDetail",
+            "Home",
+            FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Hidden("id", Model.Product.ProductID)
+
+            <div class="form-group">
+                <label>Số lượng</label>
+
+                <input type="number"
+                       name="quantity"
+                       value="1"
+                       min="1"
+                       class="form-control"
+                       style="max-width: 120px;" />
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Thêm vào giỏ hàng
+            </button>
+
+            @Html.ActionLink(
+                "Quay lại",
+                "Index",
+                "Home",
+                null,
+                new { @class = "btn btn-default" }
+            )
+        }
+    </div>
+</div>
+
+<hr />
+
+<h3>Sản phẩm tương tự</h3>
+
+@if (Model.RelatedProducts != null &&
+     Model.RelatedProducts.Any())
+{
+    <div class="related-products">
+        @foreach (var product in Model.RelatedProducts)
+        {
+            <div class="related-item">
+                <a href="@Url.Action(
+                    "ProductDetail",
+                    "Home",
+                    new { id = product.ProductID })">
+
+                    <img src="@Url.Content(
+                        "~/Content/Images/" + product.ProductImage)"
+                         alt="@product.ProductName" />
+                </a>
+
+                <h4>@product.ProductName</h4>
+
+                <p class="detail-price"
+                   style="font-size: 17px;">
+                    @product.ProductPrice.ToString("N0") đ
+                </p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Chưa có sản phẩm tương tự.</p>
+}
+
+<hr />
+
+<h3>Sản phẩm bán chạy</h3>
+
+<div class="related-products">
+    @foreach (var product in Model.TopProducts)
+    {
+        <div class="related-item">
+            <a href="@Url.Action(
+                "ProductDetail",
+                "Home",
+                new { id = product.ProductID })">
+
+                <img src="@Url.Content(
+                    "~/Content/Images/" + product.ProductImage)"
+                     alt="@product.ProductName" />
+            </a>
+
+            <h4>@product.ProductName</h4>
+
+            <p class="detail-price"
+               style="font-size: 17px;">
+                @product.ProductPrice.ToString("N0") đ
+            </p>
+        </div>
+    }
+</div>

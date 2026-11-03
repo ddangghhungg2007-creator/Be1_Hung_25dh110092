@@ -23,15 +23,16 @@
     .product-table {
         width: 100%;
         background-color: #FFFFFF;
-        color: #000000;
+        /* color: #000000;*/
+        color: #FFFFFF;
         border-collapse: collapse;
         border: 1px solid #FF0000;
     }
 
-        /* Tiêu đề các cột: nền vàng, chữ tím */
+        /* Tiêu đề các cột: nền xám, chữ cam */
         .product-table th {
-            background-color: #FFD54F;
-            color: #800080;
+            background-color: #424242;
+            color: #FF9800;
             padding: 12px;
             text-align: center;
             border: 1px solid #FF0000;
@@ -44,14 +45,14 @@
             border: 1px solid #FF0000;
         }
 
-        /* Nền các dòng sản phẩm màu đỏ nhạt */
+        /* Nền các dòng sản phẩm màu đen */
         .product-table tbody tr {
-            background-color: #FFCDD2;
+            background-color: #000000;
         }
 
             /* Hiệu ứng khi di chuột vào dòng sản phẩm */
             .product-table tbody tr:hover {
-                background-color: #EF9A9A;
+                background-color: #3366FF;
                 transition: 0.2s;
             }
 
@@ -66,10 +67,11 @@
         padding: 4px;
     }
 
-    /* Các nút bấm: nền vàng, chữ tím */
+    /* Các nút bấm: nền trắng, chữ đỏ */
+
     .product-btn {
         display: inline-block;
-        background-color: #000000;
+        background-color: #FFFFFF;
         color: #B71C1C !important;
         border: 1px solid #B71C1C;
         border-radius: 5px;
@@ -207,7 +209,8 @@
                 </td>
 
                 <td class="product-price">
-                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                    @*@Html.DisplayFor(modelItem => item.ProductPrice)*@
+                      @String.Format("{0:N0}", item.ProductPrice)
                 </td>
 
                 <td>

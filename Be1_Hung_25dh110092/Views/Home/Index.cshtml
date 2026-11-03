@@ -1,31 +1,219 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+
+@model Be1_Hung_25dh110092.Models.ViewModel.HomeProductVM
+
+@{
+    ViewBag.Title = "Trang chủ";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<style>
+    .home-banner {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        padding: 35px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+        .home-banner h1 {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+    .product-section {
+        margin: 30px 0;
+    }
+
+    .product-list {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        background: white;
+        transition: 0.2s;
+    }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px #ccc;
+            transform: translateY(-3px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+    .product-name {
+        min-height: 40px;
+        font-weight: bold;
+    }
+
+    .product-price {
+        color: #e53935;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .search-box {
+        max-width: 650px;
+        margin: 20px auto;
+    }
+
+    @@media (max-width: 768px) {
+        .product-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>
+
+<div class="home-banner">
+    <h1>Chào mừng đến với cửa hàng</h1>
+    <p>Khám phá những sản phẩm phù hợp với bạn.</p>
+
+    <div class="search-box">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <div class="input-group">
+                @Html.TextBox(
+                    "searchTerm",
+                    Model.SearchTerm,
+                    new
+                    {
+                        @class = "form-control",
+                        placeholder = "Nhập tên sản phẩm hoặc mô tả..."
+                    })
+
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-success">
+                        Tìm kiếm
+                    </button>
+                </span>
+            </div>
+        }
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+<h3>Danh mục sản phẩm</h3>
+
+<div class="btn-group" style="margin-bottom: 20px;">
+    @foreach (var category in Model.Categories)
+    {
+        @Html.ActionLink(
+            category.CategoryName,
+            "ProductList",
+            "Home",
+            new { id = category.CategoryID },
+            new { @class = "btn btn-default" }
+        )
+    }
+
+    @Html.ActionLink(
+        "Tất cả sản phẩm",
+        "ProductList",
+        "Home",
+        null,
+        new { @class = "btn btn-success" }
+    )
 </div>
+
+<hr />
+
+<section class="product-section">
+    <h2>Sản phẩm nổi bật</h2>
+
+    @if (Model.FeaturedProducts != null &&
+         Model.FeaturedProducts.Any())
+    {
+        <div class="product-list">
+            @foreach (var product in Model.FeaturedProducts)
+            {
+                <div class="product-card">
+                    <a href="@Url.Action(
+                        "ProductDetail",
+                        "Home",
+                        new { id = product.ProductID })">
+
+                        <img src="@Url.Content(
+                            "~/Content/Images/" + product.ProductImage)"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <div class="product-name">
+                        @product.ProductName
+                    </div>
+
+                    <p class="product-price">
+                        @product.ProductPrice.ToString("N0") đ
+                    </p>
+
+                    @Html.ActionLink(
+                        "Xem chi tiết",
+                        "ProductDetail",
+                        "Home",
+                        new { id = product.ProductID },
+                        new { @class = "btn btn-success btn-sm" }
+                    )
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Không tìm thấy sản phẩm.</p>
+    }
+</section>
+
+<hr />
+
+<section class="product-section">
+    <h2>Sản phẩm mới</h2>
+
+    @if (Model.NewProducts != null &&
+         Model.NewProducts.Any())
+    {
+        <div class="product-list">
+            @foreach (var product in Model.NewProducts)
+            {
+                <div class="product-card">
+                    <a href="@Url.Action(
+                        "ProductDetail",
+                        "Home",
+                        new { id = product.ProductID })">
+
+                        <img src="@Url.Content(
+                            "~/Content/Images/" + product.ProductImage)"
+                             alt="@product.ProductName" />
+                    </a>
+
+                    <div class="product-name">
+                        @product.ProductName
+                    </div>
+
+                    <p class="product-price">
+                        @product.ProductPrice.ToString("N0") đ
+                    </p>
+
+                    @Html.ActionLink(
+                        "Xem chi tiết",
+                        "ProductDetail",
+                        "Home",
+                        new { id = product.ProductID },
+                        new { @class = "btn btn-primary btn-sm" }
+                    )
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Không tìm thấy sản phẩm.</p>
+    }
+</section>
