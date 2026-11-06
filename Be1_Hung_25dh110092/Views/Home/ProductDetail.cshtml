@@ -181,8 +181,7 @@ else
                 "Home",
                 new { id = product.ProductID })">
 
-                <img src="@Url.Content(
-                    "~/Content/Images/" + product.ProductImage)"
+                <img src="@Url.Content(/*  "~/Content/Images/" +*/ product.ProductImage)"
                      alt="@product.ProductName" />
             </a>
 

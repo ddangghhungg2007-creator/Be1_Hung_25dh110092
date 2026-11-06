@@ -1,0 +1,67 @@
+﻿@model Be1_Hung_25dh110092.Models.ViewModel.CheckoutVM
+
+@{
+    ViewBag.Title = "Thanh toán";
+}
+
+<h2>THANH TOÁN ĐƠN HÀNG</h2>
+<hr />
+
+@using (Html.BeginForm("Checkout", "Order", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <h3>Thông tin giao hàng</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressDelivery)
+
+        @Html.TextAreaFor(m => m.AddressDelivery,
+            new { @class = "form-control", rows = 3, id = "addressDelivery" })
+
+        @Html.ValidationMessageFor(m => m.AddressDelivery,
+            "", new { @class = "text-danger" })
+    </div>
+
+    <h3>Chi tiết đơn hàng</h3>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("N0") đ</td>
+                    <td>@item.TotalPrice.ToString("N0") đ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 style="color:red">
+        Tổng tiền: @Model.TotalAmount.ToString("N0") đ
+    </h3>
+
+    <p>Trạng thái thanh toán ban đầu: Chưa thanh toán</p>
+
+    <button type="submit" class="btn btn-success">
+        Đặt hàng
+    </button>
+
+    @Html.ActionLink("Quay lại giỏ hàng",
+        "Index", "Cart",
+        null,
+        new { @class = "btn btn-default" })
+}

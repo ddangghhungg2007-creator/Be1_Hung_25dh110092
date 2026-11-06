@@ -1,0 +1,75 @@
+﻿@model Be1_Hung_25dh110092.Models.ViewModel.PersonalMenuVM
+
+<li>
+    @Html.ActionLink("Trang chủ", "Index", "Home")
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        @if (Model.IsLoggedIn)
+        {
+            <span>Xin chào, @Model.Username</span>
+        }
+        else
+        {
+            <span>Tài khoản</span>
+        }
+
+        <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu">
+        @if (Model.IsLoggedIn)
+        {
+            <li>
+                @Html.ActionLink(
+                    "Thông tin tài khoản",
+                    "ProfileInfo",
+                    "Account"
+                )
+            </li>
+
+            <li>
+                @Html.ActionLink(
+                    "Lịch sử mua hàng",
+                    "MyOrder",
+                    "Order"
+                )
+            </li>
+
+            <li>
+                @Html.ActionLink(
+                    "Đăng xuất",
+                    "Logout",
+                    "Account"
+                )
+            </li>
+        }
+        else
+        {
+            <li>
+                @Html.ActionLink(
+                    "Đăng ký",
+                    "Register",
+                    "Account"
+                )
+            </li>
+
+            <li>
+                @Html.ActionLink(
+                    "Đăng nhập",
+                    "Login",
+                    "Account"
+                )
+            </li>
+        }
+    </ul>
+</li>
+
+<li>
+    @Html.ActionLink(
+        "Giỏ hàng (" + Model.CartCount + ")",
+        "Index",
+        "Cart"
+    )
+</li>

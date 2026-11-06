@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Be1_Hung_25dh110092.Models.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+}
+
+<h2>ĐƠN HÀNG CỦA TÔI</h2>
+<hr />
+
+@using (Html.BeginForm("MyOrder", "Order", FormMethod.Get))
+{
+    <div class="form-group">
+        <input type="text"
+               name="tuKhoa"
+               value="@ViewBag.TuKhoa"
+               class="form-control"
+               placeholder="Tìm theo mã đơn hàng hoặc tên sản phẩm..." />
+    </div>
+
+    <div class="form-group">
+        <select name="trangThai" class="form-control">
+            <option value="">Tất cả đơn hàng</option>
+            <option value="Chưa thanh toán">Chưa thanh toán</option>
+            <option value="Đã thanh toán">Đã thanh toán</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Tìm kiếm
+    </button>
+}
+
+<hr />
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        Bạn chưa có đơn hàng nào.
+    </div>
+}
+else
+{
+    foreach (var order in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Mã đơn hàng: #@order.OrderID</strong>
+                <span style="float:right">
+                    @order.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                </span>
+            </div>
+
+            <div class="panel-body">
+                @foreach (var item in order.OrderDetails)
+                {
+                    <div style="padding:10px;border-bottom:1px solid #ddd">
+                        <strong>@item.Product.ProductName</strong>
+                        <br />
+                        Số lượng: @item.Quantity
+                        <br />
+                        Đơn giá: @item.UnitPrice.ToString("N0") đ
+                        <br />
+                        Thành tiền:
+                        @((item.Quantity * item.UnitPrice).ToString("N0")) đ
+                    </div>
+                }
+
+                <p style="margin-top:15px">
+                    Trạng thái: <strong>@order.PaymentStatus</strong>
+                </p>
+
+                <h4 style="color:red">
+                    Tổng tiền: @order.TotalAmount.ToString("N0") đ
+                </h4>
+
+                @Html.ActionLink("Xem chi tiết",
+                    "OrderSuccess", "Order",
+                    new { id = order.OrderID },
+                    new { @class = "btn btn-info" })
+            </div>
+        </div>
+    }
+}

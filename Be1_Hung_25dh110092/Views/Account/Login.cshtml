@@ -1,0 +1,40 @@
+﻿@model Be1_Hung_25dh110092.Models.ViewModel.LoginVM
+
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<h2>ĐĂNG NHẬP</h2>
+
+<hr />
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success">@TempData["ThongBao"]</div>
+}
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Username)
+        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-info">Đăng nhập</button>
+
+    <p style="margin-top:15px">
+        Chưa có tài khoản?
+        @Html.ActionLink("Đăng ký ngay", "Register", "Account")
+    </p>
+}

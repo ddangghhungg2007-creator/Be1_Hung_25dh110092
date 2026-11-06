@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Be1_Hung_25dh110092.Models.Category>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Danh mục <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu">
+        @foreach (var item in Model)
+        {
+            <li>
+                @Html.ActionLink(
+                    item.CategoryName,
+                    "ProductList",
+                    "Home",
+                    new { id = item.CategoryID },
+                    null
+                )
+            </li>
+        }
+
+        <li class="divider"></li>
+
+        <li>
+            @Html.ActionLink(
+                "Tất cả sản phẩm",
+                "ProductList",
+                "Home",
+                null,
+                null
+            )
+        </li>
+    </ul>
+</li>

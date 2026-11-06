@@ -1,0 +1,77 @@
+﻿@model Be1_Hung_25dh110092.Models.Order
+
+@{
+    ViewBag.Title = "Xác nhận đơn hàng";
+}
+
+<h2 style="color:green">ĐẶT HÀNG THÀNH CÔNG!</h2>
+
+<p>Cảm ơn bạn đã mua hàng tại cửa hàng.</p>
+
+<hr />
+
+<h3>Thông tin đơn hàng</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Mã đơn hàng</th>
+        <td>@Model.OrderID</td>
+    </tr>
+
+    <tr>
+        <th>Ngày đặt hàng</th>
+        <td>@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+    </tr>
+
+    <tr>
+        <th>Tổng tiền</th>
+        <td style="color:red;font-weight:bold">
+            @Model.TotalAmount.ToString("N0") đ
+        </td>
+    </tr>
+
+    <tr>
+        <th>Trạng thái thanh toán</th>
+        <td>@Model.PaymentStatus</td>
+    </tr>
+
+    <tr>
+        <th>Địa chỉ giao hàng</th>
+        <td>@Model.AddressDelivery</td>
+    </tr>
+</table>
+
+<h3>Chi tiết sản phẩm</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>@item.Product.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("N0") đ</td>
+                <td>@((item.Quantity * item.UnitPrice).ToString("N0")) đ</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Tiếp tục mua hàng",
+    "Index", "Home",
+    null,
+    new { @class = "btn btn-success" })
+
+@Html.ActionLink("Lịch sử mua hàng",
+    "MyOrder", "Order",
+    null,
+    new { @class = "btn btn-primary" })

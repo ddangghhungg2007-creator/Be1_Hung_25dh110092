@@ -180,6 +180,14 @@ namespace Be1_Hung_25dh110092.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
+            // NOTE: Tạo danh sách tài khoản cho DropDownList
+            ViewBag.Username = new SelectList(
+                db.Users.ToList(),
+                "Username",
+                "Username",
+                customer.Username
+            );
+
             return View(customer);
         }
 
@@ -187,9 +195,10 @@ namespace Be1_Hung_25dh110092.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
-            [Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username")] Customer customer)
+            [Bind(Include = "CustomerID,CustomerName,CustomerPhone,CustomerEmail,CustomerAddress,Username")]
+    Customer customer)
         {
-            // NOTE: Kiểm tra tài khoản liên kết có tồn tại không
+            // NOTE: Kiểm tra tài khoản liên kết
             if (string.IsNullOrWhiteSpace(customer.Username) ||
                 !db.Users.Any(u => u.Username == customer.Username))
             {
@@ -198,11 +207,30 @@ namespace Be1_Hung_25dh110092.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(customer).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    // NOTE: Cập nhật thông tin khách hàng
+                    db.Entry(customer).State = EntityState.Modified;
 
-                return RedirectToAction("Index");
+                    db.SaveChanges();
+
+                    TempData["ThongBao"] = "Cập nhật khách hàng thành công!";
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi cập nhật: " + ex.Message);
+                }
             }
+
+            // NOTE: Nạp lại danh sách tài khoản nếu cập nhật thất bại
+            ViewBag.Username = new SelectList(
+                db.Users.ToList(),
+                "Username",
+                "Username",
+                customer.Username
+            );
 
             return View(customer);
         }

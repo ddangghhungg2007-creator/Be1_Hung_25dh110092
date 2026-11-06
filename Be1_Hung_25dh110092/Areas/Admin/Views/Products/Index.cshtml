@@ -194,13 +194,13 @@
                 <td style="text-align: center;">
                     @if (!string.IsNullOrEmpty(item.ProductImage))
                     {
-                        <img src="@Url.Content(item.ProductImage)"
+                        <img src="@item.ProductImage"
                              alt="@item.ProductName"
                              class="product-image" />
                     }
                     else
                     {
-                        <span>Chưa có ảnh</span>
+                        <span>Chưa có hình ảnh</span>
                     }
                 </td>
 

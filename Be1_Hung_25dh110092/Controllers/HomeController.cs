@@ -7,6 +7,7 @@ using Be1_Hung_25dh110092.Models;
 using Be1_Hung_25dh110092.Models.ViewModel;
 
 
+
 namespace Be1_Hung_25dh110092.Controllers
 {
     public class HomeController : Controller
@@ -139,6 +140,29 @@ namespace Be1_Hung_25dh110092.Controllers
                 "Cart",
                 new { id = id, quantity = quantity }
             );
+        }
+
+        // NOTE: Partial View hiển thị danh mục trên menu
+        public ActionResult CategoryMenuPV()
+        {
+            var categories = db.Categories.ToList();
+
+            return PartialView("_CategoriesPV", categories);
+        }
+
+        // NOTE: Partial View hiển thị menu cá nhân
+        public ActionResult PersonalMenuPV()
+        {
+            var model = new PersonalMenuVM();
+
+            model.IsLoggedIn = User.Identity.IsAuthenticated;
+            model.Username = User.Identity.Name;
+
+            var cart = Session["Cart"] as List<CartItem>;
+
+            model.CartCount = cart == null ? 0 : cart.Sum(x => x.Quantity);
+
+            return PartialView("_PersonalMenuPV", model);
         }
 
         protected override void Dispose(bool disposing)
